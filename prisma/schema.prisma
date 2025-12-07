@@ -1,0 +1,21 @@
+
+// This connects to your PostgreSQL server 
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Budget {
+  id        Int      @id @default(autoincrement())
+  income    Float
+  bills     Float
+  food      Float
+  transport Float
+  subscriptions Float
+  misc      Float
+  updatedAt DateTime @updatedAt
+}
