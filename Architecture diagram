@@ -1,0 +1,21 @@
+graph TD
+    User[User Interaction] --> UI[React UI Components]
+    UI --> Store[Zustand State Store]
+    
+    subgraph "Local Device (Browser)"
+        Store <-->|Persist/Hydrate| IDB[(IndexedDB)]
+        Store --> Sync[Sync Manager]
+        Sync -->|Check Network| Status{Is Online?}
+    end
+    
+    subgraph "Cloud Backend (Vercel/Supabase)"
+        Status -->|Yes: POST /api/sync| API[Next.js API Routes]
+        API -->|ORM| Prisma[Prisma Client]
+        Prisma <-->|SQL| DB[(Supabase PostgreSQL)]
+    end
+    
+    Status -->|No: Queue Changes| IDB
+    
+    style User fill:#f9f,stroke:#333,stroke-width:2px
+    style IDB fill:#ff9,stroke:#333,stroke-width:2px
+    style DB fill:#9cf,stroke:#333,stroke-width:2px
